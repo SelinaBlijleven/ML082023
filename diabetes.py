@@ -26,27 +26,41 @@ from sklearn.preprocessing import StandardScaler
 #%% Load data
 
 # Load the CSV in the same folder containing diabetes data into a Pandas Dataframe.
-diabetes = pd.read_csv('diabetes.csv')
+diabetes = pd.read_csv('./Data/diabetes.csv')
 
 # Print the names of the columns we have in our DataFrame.
 print(diabetes.columns)
 
 #%% Pre-processing
-# Removing zero/NaN (because this data is unusable and skews our results)
+
+''' 
+Removing zero/NaN (because this data is unusable and skews our results)
+
+- Some patients have no glucose measurements
+- Some have no blood pressure measurements 
+    (often no skin thickness or insulin measurements either)
+'''
 db_ppd = diabetes[(diabetes.Glucose != 0) & (diabetes.BloodPressure != 0)]
 
-# Scaling
+'''
+Some of our values are distributed inequally, with exceptionally large or small 
+values occurring. We use the sklearn StandardScaler, to reduce the impact of any 
+feature that uses big numbers.
+'''
 db_scaled = pd.DataFrame(
     StandardScaler().fit_transform(db_ppd), 
     columns = db_ppd.columns
 )
 
 #%% Exploration: Uni-variate
-# Univariate distributions
+'''
+Look at every column available in the DataFrame so we can 
+plot a distribution plot.
+'''
 for column in diabetes.columns:
     
     # Plot a distribution of the 
-    sns.displot(db_scaled, x=column, binwidth=1)
+    sns.displot(db_scaled, x=column, binwidth=1)    # Bin-width helps us with continuous variables
 
 #%% Exploration 2: Multi-variate
 
