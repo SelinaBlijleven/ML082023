@@ -48,7 +48,7 @@ def is_controversial(text):
 # which are then appended to the original dataframe, giving us more features.
 tweets[['neg', 'neu', 'pos', 'compound']] = tweets['text'].apply(get_sentiment_scores)
 
-#%% Exploration
+#%% Exploration: univariate distributions for sentiment analysis scores
 corr_mat = tweets.corr()
 
 sns.heatmap(corr_mat)
@@ -59,7 +59,7 @@ for score in ['neg', 'neu', 'pos', 'compound']:
     sns.displot(tweets, x=score)
     plt.yscale('log')
 
-#%%
+#%% Exploration: message distribution
 
 sns.histplot(tweets, x='message')
 plt.xticks(rotation=45)
